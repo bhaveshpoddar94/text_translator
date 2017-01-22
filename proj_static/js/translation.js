@@ -1,0 +1,1 @@
+console.log('Hello, You are inside translation.js');

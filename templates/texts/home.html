@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">
+{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-fixed-top navbar-light" style="background-color: #3f3f3f;">
+	<div class="container">
+		<div class="row">
+			<a class="navbar-brand" href="/" style="color: #FFF; font-weight: bold;">DirecTrans</a>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<form action="/translate/" method="POST" id="ask">
+					{% csrf_token %}
+				    <div class="form-group">
+				  		<select id="aLang" class="selectpicker" data-width="auto">
+							<option selected value=''>Your Language</option>
+							<option value='en'>English</option>
+							<option value='fr'>French</option>
+							<option value='es'>Spanish</option>
+							<option value='de'>German</option>
+							<option value='it'>Italian</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<textarea class="form-control" rows="3" id="aText" value="Enter Text"></textarea>
+					</div>
+					<div class="form-group">
+						<input type="submit" id="asubmit" class="btn btn-md" value="Translate" style="color: #fff;background-color: #0000FF; font-weight: bold;">
+					</div>
+				</form>
+		    </div>
+				
+			<div class="col-md-6">
+				<form action="/translate/" method="POST" id="tell">
+				    <div class="form-group">
+						<select id="tLang" class="selectpicker" data-width="auto">
+						    <option selected value=''>Your Language</option>
+							<option value='en'>English</option>
+							<option value='fr'>French</option>
+							<option value='es'>Spanish</option>
+							<option value='de'>German</option>
+							<option value='it'>Italian</option>
+						</select>
+					</div>
+					<div class="form-group">
+				    	<textarea class="form-control" rows="3" id="tText" value="Enter Text"></textarea>
+					</div>
+				    <div class="form-group">
+						<input type="submit" id="asubmit" class="btn btn-md" value="Translate" style="color: #fff; background-color:#FFA500; font-weight: bold;">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</nav>
+<div class="container" id="bigdiv" style="padding-top: 300px;"></div>
+
+	{% block scripts %}
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
+		<!-- Script to extract data from inputs -->
+		<script type="text/javascript">
+			$('.selectpicker').selectpicker();
+		</script>
+		<script type="text/javascript">
+			$('#ask').on('submit', function(event){
+    		  event.preventDefault();
+			  console.log( "Handler for asubmit called.");
+			  var fromLang = $('#aLang').val();
+			  var toLang = $('#tLang').val();
+			  var text = $('#aText').val();
+			  console.log(fromLang);
+			  console.log(toLang);
+			  console.log(text);
+			  if(!fromLang || !toLang || !text){
+			  	alert("Fill all the required fields");
+			  }
+			  else{
+				translate_text(text, fromLang, toLang, 'a');
+			  }
+			});
+			$('#tell').on('submit', function(event){
+    		  event.preventDefault();
+			  console.log("Handler for tsubmit called.");
+			  var fromLang = $('#tLang').val();
+			  var toLang = $('#aLang').val();
+			  var text = $('#tText').val();
+			  console.log(fromLang);
+			  console.log(toLang);
+			  console.log(text);
+			  if(!fromLang || !toLang || !text){
+			  	alert("Fill all the required fields");
+			  }
+			  else{
+			  	translate_text(text, fromLang, toLang, 't');
+			  }
+			});
+		</script>
+		<script src="{% static "js/translation.js" %}"></script>
+		<script src="{% static "js/error.js" %}"></script>
+
+	{% endblock %}
+	
+{% endblock %}
