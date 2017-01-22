@@ -36,6 +36,7 @@ def GetTextAndTranslate(textToTranslate, fromLangCode, toLangCode):
         print "The translation is---> ", translation.text #display translation
         return translation.text
     except Exception as e:
+        print str(e)
         return str(e)
         pass
 
