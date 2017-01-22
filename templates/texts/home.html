@@ -10,6 +10,7 @@
 	<div class="container">
 		<div class="row">
 			<a class="navbar-brand" href="/" style="color: #FFF; font-weight: bold;">DirecTrans</a>
+			<a href="https://ufl.qualtrics.com/SE/?SID=SV_abG6VOqJwAH0hvf" id="fin" class="btn btn-success active pull-right" role="button" aria-pressed="true">Interaction Complete</a>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
@@ -50,14 +51,26 @@
 				    	<textarea class="form-control" rows="3" id="tText" value="Enter Text"></textarea>
 					</div>
 				    <div class="form-group">
-						<input type="submit" id="asubmit" class="btn btn-md" value="Translate" style="color: #fff; background-color:#FFA500; font-weight: bold;">
+						<input type="submit" id="tsubmit" class="btn btn-md" value="Translate" style="color: #fff; background-color:#FFA500; font-weight: bold;">
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
 </nav>
-<div class="container" id="bigdiv" style="padding-top: 300px;"></div>
+<div class="container" id="table-translate" style="display: none;">
+	<table class="table">
+	  <thead>
+	    <tr class='text-center'>
+	      <th>Text</th>
+	      <th>Translation</th>
+	      <th>Report Error</th>
+	    </tr>
+	  </thead>
+	  <tbody id='text-translate' style="font-size: 16px;">
+	  </tbody>
+	</table>
+</div>
 
 	{% block scripts %}
 		<!-- Latest compiled and minified JavaScript -->
@@ -67,6 +80,37 @@
 			$('.selectpicker').selectpicker();
 		</script>
 		<script type="text/javascript">
+
+			$(function(){
+			  // Handler for .ready() called.
+			  blue_count = 0;
+			  orange_count = 0;
+			  var navht = $('nav').height() + 20;
+			  console.log(navht);
+			  $('#table-translate').css({
+			    "padding-top": navht,
+			  });
+			});
+
+			$('#table-translate').on('click', '.error', function(){
+			    var x = $(this).parent().parent();
+    			if(x.css('backgroundColor')== 'rgb(214, 225, 255)'){
+					blue_count++;			
+    			}
+    			else{
+    				orange_count++;
+    			}
+    			console.log("Blue Count "+ blue_count);
+    			console.log("Orange_Count "+ orange_count);
+    			report_error($(this).data("id"));
+    			$(this).val('Error Logged');
+			});
+
+			$( "#fin" ).click(function() {
+			  total = blue_count + orange_count;
+			  alert("Total errors reported: "+total);
+			});
+
 			$('#ask').on('submit', function(event){
     		  event.preventDefault();
 			  console.log( "Handler for asubmit called.");
@@ -83,6 +127,7 @@
 				translate_text(text, fromLang, toLang, 'a');
 			  }
 			});
+
 			$('#tell').on('submit', function(event){
     		  event.preventDefault();
 			  console.log("Handler for tsubmit called.");
@@ -99,6 +144,7 @@
 			  	translate_text(text, fromLang, toLang, 't');
 			  }
 			});
+
 		</script>
 		<script src="{% static "js/translation.js" %}"></script>
 		<script src="{% static "js/error.js" %}"></script>

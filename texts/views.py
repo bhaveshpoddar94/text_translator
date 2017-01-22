@@ -46,6 +46,14 @@ def error_report(request):
 		'success': False,
 		'msg': ''
 	}
-	if request.method == 'POST':
-		return JsonResponse(context_dict)
+	if request.method == 'GET': 
+		id = int(request.GET.get('id'))
+		try:
+			temp = models.Translation.objects.get(pk=id)
+			temp.error = True
+			temp.save()
+			context_dict['success'] = True
+		except Exception as e:
+			context_dict['msg'] = str(e)
+	return JsonResponse(context_dict)
 

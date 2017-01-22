@@ -14,20 +14,20 @@ function translate_text(text, fromLang, toLang, actor){
         success : function(json) {
             console.log(json); // log the returned json to the console
             if (actor=='a') {
-            	color = '#0000FF';
+            	color = '#D6E1FF';
             }
             else{
-            	color = '#FFA500';
+            	color = '#FFF0D6';
             }
-        	$('#bigdiv').prepend(
-        		"<div class='row' style='border: 2px solid"+color+"; margin-top: 1%;'>\
-        			<div class='col-md-offset-2 col-md-4'>\
-        				<h4>"+ json.text +"</h4>\
-        			</div>\
-        			<div class='col-md-4'>\
-        				<h4>"+ json.translation +"</h4>\
-        			</div>\
-        		</div>"
+            if($('#table-translate:visible').length == 0){
+                $('#table-translate').show();
+            }
+        	$('#text-translate').prepend(
+        		"<tr style='background-color:"+color+";'>\
+                  <td>"+json.text+"</td>\
+                  <td>"+json.translation+"</td>\
+                  <td><input data-id='"+json.id+"' type='button' class='btn btn-danger btn-sm error' value='Error'> </td>\
+                </tr>"
         	);
         },
 
@@ -93,3 +93,20 @@ $(function() {
     });
 
 });
+
+
+// <div class='row' style='border: 2px solid"+color+"; margin-top: 1%;'>\
+//                     <div class='col-md-offset-2 col-md-4'>\
+//                         <h4>"+ json.text +"</h4>\
+//                     </div>\
+//                     <div class='col-md-4'>\
+//                         <h4>"+ json.translation +"</h4>\
+//                     </div>\
+//                     <div class='col-md-2 text-center'>\
+//                         <form class='f-error' id='f-"+ json.id +"'>\
+//                             <div class='form-group'>\
+//                                 <input type='submit' class='btn btn-danger btn-sm' id='row-"+json.id+"' value='Error'>\
+//                             </div>\
+//                         </form>\
+//                     </div>\
+//                 </div>
