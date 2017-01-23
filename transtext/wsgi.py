@@ -8,9 +8,12 @@ https://docs.djangoproject.com/en/1.10/howto/deployment/wsgi/
 """
 
 import os
-
+import sys
 from django.core.wsgi import get_wsgi_application
 from whitenoise.django import DjangoWhiteNoise
+
+reload(sys)     
+sys.setdefaultencoding("utf-8")
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "transtext.settings")
 

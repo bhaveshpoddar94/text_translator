@@ -29,8 +29,6 @@ def GetTextAndTranslate(textToTranslate, fromLangCode, toLangCode):
     payload = {'appid': finalToken, 'text': textToTranslate, 'from': fromLangCode, 'to': toLangCode}
     translateUrl = "http://api.microsofttranslator.com/v2/Http.svc/Translate"
     try:
-        reload(sys)
-        sys.setdefaultencoding('utf-8')
         translationData = requests.get(translateUrl, params=payload) #make request
         translation = ElementTree.fromstring(translationData.text.encode('utf-8')) # parse xml return values
         print "The translation is---> ", translation.text #display translation
